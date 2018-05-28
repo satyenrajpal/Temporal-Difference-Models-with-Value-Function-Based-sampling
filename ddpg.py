@@ -361,7 +361,7 @@ class DDPGAgent(Agent):
             if self.step > self.nb_steps_warmup_critic:
                 next_tau_batch=tau_batch-1
                 next_tau_batch[next_tau_batch<0] = 0
-                #ACTUAL                                                             #Give g-goalify(s)
+                                                                             				#Give g-goalify(s)
                 # target_actions, _ = self.target_actor.predict_on_batch([n_obs_batch,np.abs(resampled_goal_batch-n_obs_batch[:,:,:3]),next_tau_batch]) #Change this!
                 target_actions, _ = self.target_actor.predict_on_batch([n_obs_batch,resampled_goal_batch,next_tau_batch]) 
 
@@ -370,27 +370,21 @@ class DDPGAgent(Agent):
                 target_qf = self.target_critic.predict_on_batch(n_obs_batch_w_action) #<O/P is f(inputs)- goal
                 assert target_qf.shape == (self.batch_size,self.goal_dim)
 
-                # target_q_values=np.linalg.norm(goal_pred_batch-goal_batch_reshape,ord=1,axis=-1)
-                # target_q_values+=np.linalg.norm(np.squeeze(n_obs_batch[:,:,:3])-goal_batch_reshape,ord=1,axis=-1)
-                # target_q_values=np.multiply(target_q_values,(tau_batch==0).flatten())
-                
-
                 # Compute r_t + gamma * max_a Q(s_t+1, a) and update the target ys accordingly,
                 # but only for the affected output units (as given by action_batch).
-                           #f(inputs)      -    g
                 if self.vectorized:
-                	target_qf=np.abs(target_qf) #<-(128,3)
+                	target_qf=-np.abs(target_qf) #<-(128,goal_dim) -> Should this be -ve ?
+                			  #<O/P is -|f(inputs)- goal|
                 # target_q_values=target_q_values*(tau_batch>0) ###CHECK THIS! TRY WITHOUT THIS AS WELL
 
                 discounted_reward_batch = self.gamma * target_qf
                 discounted_reward_batch *= np.expand_dims(terminal1_batch,axis=-1)
-                # discounted_reward_batch *= terminal1_batch
                 # reward_batch=np.expand_dims(reward_batch,axis=-1)
-                #This basically says that reward is only acheived if state is terminal
+
                 assert discounted_reward_batch.shape == reward_batch.shape ==(self.batch_size,self.goal_dim)
                 targets = (reward_batch + discounted_reward_batch).reshape(self.batch_size,self.goal_dim)
-                # targets=np.linalg.norm(targets,ord=1,axis=-1)
                 assert targets.shape==(self.batch_size,self.goal_dim)
+                
                 # Perform a single batch update on the critic network.
                 ##########################################################
                 obs_batch_w_action = [obs_batch,resampled_goal_batch, tau_batch]

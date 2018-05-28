@@ -52,11 +52,9 @@ def make_models(env, vectorized):
 	# y = Concatenate()([flattened_observation,flattened_goal])
 	y = Dense(300)(y)
 	y = Activation('relu')(y)
-	# y = BatchNormalization()(y)
 	# y = Concatenate()([y,tau_input])
 	y = Dense(300)(y)
 	y = Activation('relu')(y)
-	# y = BatchNormalization()(y)
 	# y = Dense(64)(y)
 	# y = Activation('relu')(y)
 	y = Dense(action_dim)(y)
@@ -70,11 +68,9 @@ def make_models(env, vectorized):
 	# x = Concatenate()([action_input,flattened_observation,flattened_goal])
 	x = Dense(300)(x)
 	x = Activation('relu')(x)
-	# x = BatchNormalization()(x)
 	# x = Concatenate()([x,tau_input])
 	x = Dense(300)(x)
 	x = Activation('relu')(x)
-	# x = BatchNormalization()(x)
 	# x = Dense(64)(x)
 	# x = Activation('relu')(x)
 	if not vectorized:
@@ -90,12 +86,6 @@ def make_models(env, vectorized):
 	# print(critic.summary())
 	return actor, critic,action_input,goal_input,tau_input
 	
-
-"""
-Stuff we can run, if time permits:
-	-> Decay radius of 'Terminal state ' in environment
-
-"""
 
 if __name__=="__main__":
 	args=parse_args()

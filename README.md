@@ -1,7 +1,7 @@
 # Temporal-Difference-Models-with-Value-Function-Based-sampling
 Keras implementation of [Temporal Difference Models](https://arxiv.org/abs/1802.09081) by V. Pong et al.(2018) with a few tweaks
 
-## IN PROGRESS
+NOTE: IN PROGRESS
 
 Requirements:
 - Keras

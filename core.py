@@ -308,7 +308,7 @@ class Agent(object):
         self._on_train_end()
         log_history=np.array(history_success)
         
-        with open(os.path.join('results',folder_to_save,'TDM_'+reward_type+'.pkl'),'wb') as f:
+        with open(os.path.join(folder_to_save,'TDM_'+reward_type+'.pkl'),'wb') as f:
             pickle.dump(log_history,f)
 
         return history

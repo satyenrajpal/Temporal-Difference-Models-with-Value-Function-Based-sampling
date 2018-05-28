@@ -110,7 +110,7 @@ if __name__=="__main__":
 	
 	output_dir_add=args.output_dir_add
 
-	folder_to_save = os.path.join(str(datetime.datetime.now().time()).split('.')[0].replace(':','_')+'_TDM_DDPG_'+output_dir_add+reward_type)
+	folder_to_save = os.path.join('results',str(datetime.datetime.now().time()).split('.')[0].replace(':','_')+'_TDM_DDPG_'+output_dir_add+reward_type)
 	if not os.path.exists(folder_to_save):
 	    os.makedirs(folder_to_save)
 
